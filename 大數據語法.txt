@@ -1,0 +1,98 @@
+a.List the data of all departments.
+ans:SELECT *
+    FROM department;
+
+b.List the last name, hired day, e-mail and salary of employees who work for department 10.
+ans:SELECT last_name,hired_day,e-mail,salary
+    FROM employees
+    WHERE department_id = 10;
+
+c.Retrieve the data whose department name is 'Marketing'.
+ans:SELECT *
+    FROM departments
+    WHERE department_name IN 'Marketing';
+
+d.List the last name, hired day, e-mail and salary of employees who salary more than 25,000.
+ans:SELECT last_name,hired_day,e-mail,salary
+    FROM employees
+    WHERE salary >= 25000
+
+e.Display the employee last name and salary for all employees who have an ‘S’ in their last name.
+ans:SELECT last_name,salary
+    FROM employees
+    WHERE last_name LIKE 'S%';
+
+f.List the names, hired day and salary of all employees who work for department 40. Sort the data by salary in order.
+ans:SELECT last_name,hired_day,salary
+    FROM employees
+    WHERE department_id = 40
+    ORDER BY salary;
+
+g.Show the last name, job id, salary, and department id of those employees who earn commission. Sort the data by department id order and salary in descending order.
+ans:SELECT last_name,job_id,salary,department_id
+    FROM employees
+    ORDER BY department_id,salary DESC;
+
+
+
+
+a.Display the average, highest, lowest and sum of the monthly salaries and the number of employees in company.
+ans:SELECT AVG(salary),MAX(salary),MIN(salary),SUM(salary),COUNT(*)
+    FROM employees;
+
+
+b.Display the average, highest, lowest and sum of the monthly salaries and the number of employees for each department.
+ans:SELECT department_id,AVG(salary),MAX(salary),MIN(salary),SUM(salary),COUNT(*)
+    FROM employees
+    GROUP BY department_id;
+
+
+c.Display the average, highest, lowest and sum of the monthly salaries and the number of employees for department average salary more than 20,000.
+ans:SELECT department_id,AVG(salary),MAX(salary),MIN(salary),SUM(salary),COUNT(*)
+    FROM employees
+    GROUP BY department_id
+    HAVING AVG(salary) > 20000
+
+d.Display the average, highest, lowest and sum of the monthly salaries and the number of employees for each department which number of employees are greater than 2.
+ans:SELECT department_id,AVG(salary),MAX(salary),MIN(salary),SUM(salary),COUNT(*)
+    FROM employees
+    GROUP BY department_id
+    HAVING COUNT(*) > 2;
+
+
+
+a.Retrieve the name, email and salary of all employees who work for the 'Marketing' department.
+ans:SELECT A.first_name,A.last_name,A.email,A.salary,A.department_id,B.department_id
+    FROM employees A
+    JOIN departments B
+    ON A.departments_id = B.departments_id
+    WHERE department_name IN 'Marketing';
+    
+b.Display the employee last name and department name for all employees who have an ‘S’ in their last name.
+ans:SELECT A.last_name,B.department_name
+    FROM employees A
+    JOIN departments B
+    ON A.department_id = B.department_id
+    WHERE A.last_name LIKE 'S%';
+
+c.Display the average, highest, lowest and sum of the monthly salaries and the number of employees for each department and display the department name.
+ans:SELECT AVG(A.salary),MAX(A.salary),MIN(A.salary),SUM(A.salary),COUNT(*),B.department_name
+    FROM employees A
+    JOIN departments B
+    ON 
+    GROUP BY b.department_name;
+    
+d.Find the names of employees and their respective managers. (self-join)
+ans:SELECT AVG(A.salary),MAX(A.salary),MIN(A.salary),SUM(A.salary),COUNT(*),B.department_name
+    FROM employees A
+    JOIN employees B
+    ON A.manager_id = B.employees_id;
+
+e.Show the last name, job title, salary, and department name of those employees who earn commission. Sort the data by salary in descending order.
+ans:SELECT A.last_name,C.job title,A.salary,B.department_name
+    FROM employees A
+    JOIN departments B
+    ON A.department_id = B.department_id
+    JOIN jobs C
+    ON A.job_id = C.job_id
+    ORDER BY A.salary DESC;

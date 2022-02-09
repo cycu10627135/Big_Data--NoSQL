@@ -1,0 +1,81 @@
+1.Write a query to display the top 3 earners in the EMPLOYEES table. Display their last names, salaries and department name.
+ans:
+SELECT A.last_name, A.salary, B.department_name
+FROM employees A
+JOIN departments B
+ON A.department_id = B.department_id
+WHERE ROWNUM <= 3
+ORDER BY A.salary DESC;
+
+2.Increase 10 % salary of all employees who belong to 'IT' department.
+ans:
+UPDATE employees
+SET salary = salary * 1.1 
+WHERE employee_id = (SELECT department_id
+		     FROM departments
+		     WHERE department_name = 'IT');
+
+3.Insert < 70, 'Public Relations', 100, 1700> into departments.
+ans:
+INSERT INTO departments (department_id,department_name,manager_id,location_id)
+VALUES (70,'Public Relations',100,1700);
+
+4.Delete the EMPLOYEE tuple with employee_id is 206.
+ans:
+DELETE FROM employees
+WHERE employee_id = 206;
+
+5.Modify the SALARY attribute of the employee 102 tuple with employee_id is 103.
+ans:
+UPDATE employees
+SET salary = (SELECT salary
+              FROM employees
+              WHERE employee_id = 103 )
+WHERE employee_id = 102;
+
+6.Display the details of the employee ID, last name, and department ID of those employees who live in cities whose name begins with T.
+ans:
+SELECT e.employee_id, e.last_name, e.department_id
+FROM employees e
+JOIN departments d
+ON e.department_id = d.department_id
+JOIN locations l
+ON d.location_id = l.location_id
+WHERE l.city LIKE 'T%';
+
+7.Find all departments that do not have any employees.
+ans:
+SELECT *
+FROM departments 
+WHERE department_id 
+NOT IN (select department_id 
+        FROM employees);
+
+8.Find all employees who are not supervisor.
+  a.Do this using the NOT EXISTS operator.
+  b.Can this be done by using NOT IN operator? How, or why not?
+ans:
+a.
+SELECT a.last_name
+FROM employees a
+WHERE NOT EXISTS (SELECT null
+		  FROM employees b
+		  WHERE b.manager_id =
+	 	  a.employee_id);
+b.
+SELECT a.last_name
+FROM employees a
+WHERE a.employee_id
+NOT IN (SELECT b.manager_id 
+	FROM employees b);
+
+9.Write a query to display the last names of employees who have one or more coworkers in their departments with later hire date but higher salaries.
+ans:
+SELECT last_name
+FROM employees outer
+WHERE EXISTS 
+	(SELECT 'X'
+	FROM employees inner
+	WHERE inner.department_id = outer.department_id
+	AND inner.hire_date > outer.hire_date
+	AND inner.salary > outer.salary);
